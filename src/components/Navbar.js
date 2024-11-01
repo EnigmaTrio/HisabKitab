@@ -11,6 +11,15 @@ const Navbar = () => {
         <ul className="flex space-x-4">
          
           {token ? (
+            <>
+             <li>
+             <button
+               className="text-white hover:bg-blue-700 px-3 py-2 rounded"
+               onClick={() => { navigate('/add-expense');  }} 
+             >
+               Expenses
+             </button>
+           </li>
             <li>
               <button
                 className="text-white hover:bg-blue-700 px-3 py-2 rounded"
@@ -18,7 +27,7 @@ const Navbar = () => {
               >
                 Logout
               </button>
-            </li>
+            </li></>
           ) : (
             <>
               <li><Link className="text-white hover:bg-blue-700 px-3 py-2 rounded" to="/login">Login</Link></li>
