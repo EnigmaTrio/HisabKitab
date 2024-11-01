@@ -29,10 +29,7 @@ const Navbar = () => {
               </button>
             </li></>
           ) : (
-            <>
-              <li><Link className="text-white hover:bg-blue-700 px-3 py-2 rounded" to="/login">Login</Link></li>
-              <li><Link className="text-white hover:bg-blue-700 px-3 py-2 rounded" to="/signup">Signup</Link></li>
-            </>
+           null
           )}
         </ul>
       </div>

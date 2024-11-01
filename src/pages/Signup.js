@@ -14,7 +14,7 @@ const Signup = () => {
     try {
       await axios.post('http://localhost:5000/api/auth/signup', { name, email, password });
       alert('Signup successful! Please log in.');
-      navigate('/login'); // Redirect to login page after signup
+      navigate('/'); // Redirect to login page after signup
     } catch (error) {
       console.error('Signup failed', error);
       alert('Signup failed. Please try again.');
@@ -22,7 +22,8 @@ const Signup = () => {
   };
 
   return (
-    <form onSubmit={handleSignup} className="max-w-md mx-auto">
+    <div className="min-h-screen flex flex-col items-center bg-gradient-to-r from-blue-600 via-purple-700 to-indigo-800 text-white">
+    <form onSubmit={handleSignup} className="max-w-md mx-auto mt-10 bg-blue-400 bg-opacity-20 p-8 rounded-lg shadow-lg ">
       <h2 className="text-center mb-4">Signup</h2>
       <input
         type="text"
@@ -49,7 +50,19 @@ const Signup = () => {
         required
       />
       <button type="submit" className="btn btn-primary w-100">Signup</button>
+      <div className="mt-4 text-center">
+          <p className="text-sm">
+            Already have an account?{' '}
+            <span
+              onClick={() => navigate('/login')}
+              className="text-blue-200 underline cursor-pointer hover:text-white"
+            >
+              Login
+            </span>
+          </p>
+        </div>
     </form>
+    </div>
   );
 };
 

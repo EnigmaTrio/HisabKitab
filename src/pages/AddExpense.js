@@ -58,7 +58,7 @@ const AddExpense = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <form onSubmit={handleSubmit}>
-        <h2 className="text-center mb-4">Add Expense</h2>
+        <h2 className="text-center mt-2 mb-2 text-white">Add Expense</h2>
         <input
           type="text"
           placeholder="Category"
@@ -88,10 +88,10 @@ const AddExpense = () => {
           onChange={(e) => setDate(e.target.value)}
           className="form-control mb-3"
         />
-        <button type="submit" className="btn btn-primary w-100">Add Expense</button>
+        <button type="submit" className="btn btn-primary w-100 ">Add Expense</button>
       </form>
 
-      <h3 className="mt-5">Your Expenses</h3>
+      <h3 className="mt-4 text-white">Your Expenses</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
         {expenses.map((expense) => (
           <div key={expense._id} className="bg-white p-4 shadow-md rounded-lg border">
