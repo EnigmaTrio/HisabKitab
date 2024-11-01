@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+# HisabKitab
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Overview
 
-## Available Scripts
+HisabKitab is a simple and easy-to-use app designed to help people manage their money better, inspired by Tony Stark’s (Iron Man’s) efficient planning skills. The app allows users to keep track of their daily expenses, set budgets, save money toward goals, and plan for emergencies—all in one place.
 
-In the project directory, you can run:
+With a straightforward and user-friendly design, the app lets users log their expenses, see clear visuals of their spending habits, and receive reminders for upcoming bills. It’s perfect for anyone who wants to improve their budgeting, whether they’re saving up for something special or just want to keep their finances in check.
 
-### `npm start`
+## Key Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. ### Login and Signup
+    •Secure access to your own account.
+2. ### Expense Logging
+    •Record daily expenses in different categories (e.g., food, shopping).
+3. ### Budget Planning
+    •Set budgets based on spending habits to avoid overspending.
+4. ### Visual Reports
+    •View your spending in simple, visual formats.
+5. ### Savings Tracking
+    •Monitor savings progress to reach financial goals.
+6. ### Export Reports
+    •Download your expense data for offline access.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+**Frontend:** React, Bootstrap, Tailwind CSS
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Backend:** Node.js, Express.js
 
-### `npm run build`
+**Database:** MongoDB
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Frontend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/EnigmaTrio/HisabKitab.git
 
-### `npm run eject`
+2. **Install dependencies:**
+   ```bash
+   npm install
+3. **Start the server:**
+   ```bash
+   npm start
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Backend 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. **Install backend dependencies:**
+   ```bash
+   cd backend
+   npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. **Create Environment File**
+   ```bash
+   cd Backend
+   touch .env
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. **Edit Environment Variables**
+   To run this project, you will need to add your mongodb config of database like this to your .env file and secret key for jwt
+   `JWS_SECRET`
+   `MONGO_URI`
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+4. **Run the Backend Server**
+   ```bash
+   node index.js
