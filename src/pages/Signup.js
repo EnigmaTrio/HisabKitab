@@ -1,4 +1,3 @@
-// src/pages/Signup.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +11,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', { name, email, password });
+      await axios.post('http://localhost:4000/api/auth/signup', { name, email, password });
       alert('Signup successful! Please log in.');
       navigate('/'); // Redirect to login page after signup
     } catch (error) {
