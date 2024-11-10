@@ -12,14 +12,20 @@ const Navbar = () => {
          
           {token ? (
             <>
-             <li>
+            <li>
+             <button
+               className="text-white hover:bg-blue-700 px-3 py-2 rounded"
+               onClick={() => { navigate('/budget');  }} 
+             >
+               Budget
+             </button>
              <button
                className="text-white hover:bg-blue-700 px-3 py-2 rounded"
                onClick={() => { navigate('/add-expense');  }} 
              >
                Expenses
              </button>
-           </li>
+            </li>
             <li>
               <button
                 className="text-white hover:bg-blue-700 px-3 py-2 rounded"
