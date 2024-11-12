@@ -2,12 +2,29 @@ const express = require('express');
 const router = express.Router();
 const Expense = require('../models/Expense');
 const fetchuser = require('../middleware/fetchuser')
+const Budget = require('../models/Budget');
 // Add an expense
 router.post('/add',fetchuser, async (req, res) => {
   try {
     const { category, amount, description, date } = req.body;
     const userId = req.id; 
+    console.log({userId,category});
     
+    const budget = await Budget.findOne({ category });
+
+    if (!budget) {
+      return res.status(400).json({ message: 'Budget not found for this category.' });
+    }
+
+    // Check if there's enough remaining budget
+    if (budget.remaining < amount) {
+      return res.status(400).json({ message: 'Not enough budget remaining for this category.' });
+    }
+
+    // Deduct expense amount from the remaining budget
+    budget.remaining -= amount;
+    await budget.save();
+
     const newExpense = new Expense({
       user: userId,
       category,

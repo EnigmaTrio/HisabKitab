@@ -8,7 +8,9 @@ const fetchuser = require('../middleware/fetchuser')
 // Get all budgets for a user
 router.get('/', fetchuser, async (req, res) => {
   try {
-    const budgets = await Budget.find({ userId: req.id });
+
+    const userId=req.id;
+    const budgets = await Budget.find({ user:userId  });
     res.json(budgets);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch budgets' });
@@ -22,7 +24,6 @@ router.post('/add', fetchuser, async (req, res) => {
   try {
     // Check if budget for category already exists
     let budget = await Budget.findOne({ userId: req.id, category });
-    // console.log(budget);
     
     if (budget) {
       // Update existing budget
@@ -37,6 +38,7 @@ router.post('/add', fetchuser, async (req, res) => {
         user: userId,
         category,
         budgetAmount,
+        remaining:budgetAmount
       });
       console.log(budget);
       await budget.save();

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Budget = () => {
-  const [expenses, setExpenses] = useState({});
   const [categoryBudgets, setCategoryBudgets] = useState({});
   const [showAddBudget, setShowAddBudget] = useState(false);
   const [newCategory, setNewCategory] = useState('');
@@ -15,46 +14,49 @@ const Budget = () => {
     fetchBudgets();
   }, []);
 
-// Fetch budgets from backend
-const fetchBudgets = async () => {
-  try {
-    const res = await axios.get('http://localhost:4000/api/budgets', {
-      headers: { 'auth-token': token },
-    });
-    const budgetData = res.data.reduce((acc, budget) => {
-      acc[budget.category] = budget.budgetAmount;
-      return acc;
-    }, {});
-    setCategoryBudgets(budgetData);
-  } catch (error) {
-    console.error('Error fetching budgets:', error);
-  }
-};
-
-// Add or update a budget
-const handleAddBudget = async () => {
-  if (newCategory && newBudget) {
+  // Fetch budgets from backend
+  const fetchBudgets = async () => {
     try {
-      const res = await axios.post(
-        'http://localhost:4000/api/budgets/add',
-        { category: newCategory, budgetAmount: parseFloat(newBudget) },
-        { headers: { 'auth-token': token } }
-      );
-      setCategoryBudgets({
-        ...categoryBudgets,
-        [newCategory]: parseFloat(newBudget),
+      const res = await axios.get('http://localhost:4000/api/budgets', {
+        headers: { 'auth-token': token },
       });
-      setNewCategory('');
-      setNewBudget('');
-      setShowAddBudget(false);
+      // Map the backend data to include remaining for each category
+      const budgetData = res.data.reduce((acc, budget) => {
+        acc[budget.category] = {
+          budgetAmount: budget.budgetAmount,
+          remaining: budget.remaining, // Fetch remaining from backend directly
+        };
+        return acc;
+      }, {});
+      setCategoryBudgets(budgetData);
     } catch (error) {
-      console.error('Error saving budget:', error);
+      console.error('Error fetching budgets:', error);
     }
-  } else {
-    alert('Please select a category and enter a budget amount.');
-  }
-};
+  };
 
+  // Add or update a budget
+  const handleAddBudget = async () => {
+    if (newCategory && newBudget) {
+      try {
+        await axios.post(
+          'http://localhost:4000/api/budgets/add',
+          { category: newCategory, budgetAmount: parseFloat(newBudget) },
+          { headers: { 'auth-token': token } }
+        );
+        setCategoryBudgets({
+          ...categoryBudgets,
+          [newCategory]: { budgetAmount: parseFloat(newBudget), remaining: parseFloat(newBudget) },
+        });
+        setNewCategory('');
+        setNewBudget('');
+        setShowAddBudget(false);
+      } catch (error) {
+        console.error('Error saving budget:', error);
+      }
+    } else {
+      alert('Please select a category and enter a budget amount.');
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto pt-16">
@@ -109,16 +111,12 @@ const handleAddBudget = async () => {
         {Object.keys(categoryBudgets).map((category) => (
           <div 
             key={category} 
-            className="bg-white p-4 shadow-md rounded-lg border" // Matching Expense card styles
-            style={{ width: '100%', minHeight: '180px' }} // Ensure consistent sizing
+            className="bg-white p-4 shadow-md rounded-lg border"
+            style={{ width: '100%', minHeight: '180px' }}
           >
             <h3 className="text-blue-600 font-semibold mb-2">{category}</h3>
-            <p><strong>Set Budget:</strong> ${categoryBudgets[category].toFixed(2)}</p>
-            <p><strong>Total Expenses:</strong> ${expenses[category]?.toFixed(2) || 0}</p>
-            <p>
-              <strong>Remaining Budget:</strong> $
-              {(categoryBudgets[category] - (expenses[category] || 0)).toFixed(2)}
-            </p>
+            <p><strong>Set Budget:</strong> ${categoryBudgets[category].budgetAmount.toFixed(2)}</p>
+            <p><strong>Remaining Budget:</strong> ${categoryBudgets[category].remaining.toFixed(2)}</p>
           </div>
         ))}
       </div>
