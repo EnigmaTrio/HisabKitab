@@ -24,7 +24,7 @@ const Budget = () => {
       const budgetData = res.data.reduce((acc, budget) => {
         acc[budget.category] = {
           budgetAmount: budget.budgetAmount,
-          remaining: budget.remaining, // Fetch remaining from backend directly
+          expenses: budget.expenses, // Fetch remaining from backend directly
         };
         return acc;
       }, {});
@@ -45,7 +45,7 @@ const Budget = () => {
         );
         setCategoryBudgets({
           ...categoryBudgets,
-          [newCategory]: { budgetAmount: parseFloat(newBudget), remaining: parseFloat(newBudget) },
+          [newCategory]: { budgetAmount: parseFloat(newBudget) },
         });
         setNewCategory('');
         setNewBudget('');
@@ -116,7 +116,7 @@ const Budget = () => {
           >
             <h3 className="text-blue-600 font-semibold mb-2">{category}</h3>
             <p><strong>Set Budget:</strong> ${categoryBudgets[category].budgetAmount.toFixed(2)}</p>
-            <p><strong>Remaining Budget:</strong> ${categoryBudgets[category].remaining.toFixed(2)}</p>
+            <p><strong>expenses:</strong> ${categoryBudgets[category].expenses ?categoryBudgets[category].expenses : Number(0.00)  }</p>
           </div>
         ))}
       </div>

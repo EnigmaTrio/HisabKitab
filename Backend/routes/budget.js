@@ -38,7 +38,6 @@ router.post('/add', fetchuser, async (req, res) => {
         user: userId,
         category,
         budgetAmount,
-        remaining:budgetAmount
       });
       console.log(budget);
       await budget.save();

@@ -14,7 +14,7 @@ const BudgetSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  remaining: { type: Number,default:0 },
+  expenses: { type: Number,default:0 },
 });
 
 module.exports = mongoose.model("Budget", BudgetSchema);

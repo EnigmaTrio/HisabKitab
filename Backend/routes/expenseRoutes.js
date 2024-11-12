@@ -15,14 +15,14 @@ router.post('/add',fetchuser, async (req, res) => {
     if (!budget) {
       return res.status(400).json({ message: 'Budget not found for this category.' });
     }
-
+    const remaining = budget.budgetAmount - budget.expenses;
     // Check if there's enough remaining budget
-    if (budget.remaining < amount) {
+    if (remaining < amount) {
       return res.status(400).json({ message: 'Not enough budget remaining for this category.' });
     }
 
     // Deduct expense amount from the remaining budget
-    budget.remaining -= amount;
+    budget.expenses = Number(budget.expenses) + Number(amount);
     await budget.save();
 
     const newExpense = new Expense({
