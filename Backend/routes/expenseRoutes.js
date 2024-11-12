@@ -16,7 +16,9 @@ router.post('/add',fetchuser, async (req, res) => {
       date,
     });
 
+    console.log(newExpense);
     const savedExpense = await newExpense.save();
+    
     res.json(savedExpense);
   } catch (error) {
     res.status(500).json({ message: 'Error adding expense', error });

@@ -12,31 +12,34 @@ const Budget = () => {
   const categories = ['Food', 'Clothes', 'Education', 'Miscellaneous'];
 
   useEffect(() => {
-    fetchExpenses();
+    fetchBudgets();
   }, []);
 
-  const fetchExpenses = async () => {
+// Fetch budgets from backend
+const fetchBudgets = async () => {
+  try {
+    const res = await axios.get('http://localhost:4000/api/budgets', {
+      headers: { 'auth-token': token },
+    });
+    const budgetData = res.data.reduce((acc, budget) => {
+      acc[budget.category] = budget.budgetAmount;
+      return acc;
+    }, {});
+    setCategoryBudgets(budgetData);
+  } catch (error) {
+    console.error('Error fetching budgets:', error);
+  }
+};
+
+// Add or update a budget
+const handleAddBudget = async () => {
+  if (newCategory && newBudget) {
     try {
-      const res = await axios.get('http://localhost:4000/api/expenses', {
-        headers: { 'auth-token': token },
-      });
-
-      const expensesByCategory = res.data.reduce((acc, expense) => {
-        const { category, amount } = expense;
-        if (!acc[category]) {
-          acc[category] = 0;
-        }
-        acc[category] += amount;
-        return acc;
-      }, {});
-      setExpenses(expensesByCategory);
-    } catch (error) {
-      console.error('Error fetching expenses:', error);
-    }
-  };
-
-  const handleAddBudget = () => {
-    if (newCategory && newBudget) {
+      const res = await axios.post(
+        'http://localhost:4000/api/budgets/add',
+        { category: newCategory, budgetAmount: parseFloat(newBudget) },
+        { headers: { 'auth-token': token } }
+      );
       setCategoryBudgets({
         ...categoryBudgets,
         [newCategory]: parseFloat(newBudget),
@@ -44,10 +47,14 @@ const Budget = () => {
       setNewCategory('');
       setNewBudget('');
       setShowAddBudget(false);
-    } else {
-      alert('Please select a category and enter a budget amount.');
+    } catch (error) {
+      console.error('Error saving budget:', error);
     }
-  };
+  } else {
+    alert('Please select a category and enter a budget amount.');
+  }
+};
+
 
   return (
     <div className="max-w-2xl mx-auto pt-16">
