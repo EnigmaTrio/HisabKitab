@@ -14,17 +14,16 @@ const Budget = () => {
     fetchBudgets();
   }, []);
 
-  // Fetch budgets from backend
   const fetchBudgets = async () => {
     try {
       const res = await axios.get('http://localhost:4000/api/budgets', {
         headers: { 'auth-token': token },
       });
-      // Map the backend data to include remaining for each category
+
       const budgetData = res.data.reduce((acc, budget) => {
         acc[budget.category] = {
           budgetAmount: budget.budgetAmount,
-          expenses: budget.expenses, // Fetch remaining from backend directly
+          expenses: budget.expenses, 
         };
         return acc;
       }, {});
@@ -34,7 +33,7 @@ const Budget = () => {
     }
   };
 
-  // Add or update a budget
+
   const handleAddBudget = async () => {
     if (newCategory && newBudget) {
       try {
@@ -47,6 +46,7 @@ const Budget = () => {
           ...categoryBudgets,
           [newCategory]: { budgetAmount: parseFloat(newBudget) },
         });
+        alert('Expense added successfully!');
         setNewCategory('');
         setNewBudget('');
         setShowAddBudget(false);
@@ -100,7 +100,7 @@ const Budget = () => {
           </label>
           <button 
             onClick={handleAddBudget} 
-            className="btn btn-success"
+            className="btn btn-success mb-1"
           >
             Save Budget
           </button>
@@ -108,17 +108,24 @@ const Budget = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
-        {Object.keys(categoryBudgets).map((category) => (
-          <div 
-            key={category} 
-            className="bg-white p-4 shadow-md rounded-lg border"
-            style={{ width: '100%', minHeight: '180px' }}
-          >
-            <h3 className="text-blue-600 font-semibold mb-2">{category}</h3>
-            <p><strong>Set Budget:</strong> ${categoryBudgets[category].budgetAmount.toFixed(2)}</p>
-            <p><strong>expenses:</strong> ${categoryBudgets[category].expenses ?categoryBudgets[category].expenses : Number(0.00)  }</p>
-          </div>
-        ))}
+        {Object.keys(categoryBudgets).map((category) => {
+          const budgetAmount = categoryBudgets[category].budgetAmount;
+          const expenses = categoryBudgets[category].expenses || 0.00;
+          const savings = budgetAmount - expenses;
+
+          return (
+            <div 
+              key={category} 
+              className="bg-white p-4 shadow-md rounded-lg border"
+              style={{ width: '100%', minHeight: '180px' }}
+            >
+              <h3 className="text-blue-600 font-semibold mb-2">{category}</h3>
+              <p><strong>Budget:</strong> ${budgetAmount.toFixed(2)}</p>
+              <p><strong>Expenses:</strong> ${expenses.toFixed(2)}</p>
+              <p><strong>Savings:</strong> ${savings.toFixed(2)}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
