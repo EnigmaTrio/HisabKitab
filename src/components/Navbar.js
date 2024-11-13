@@ -25,7 +25,14 @@ const Navbar = () => {
              >
                Expenses
              </button>
+             <button
+               className="text-white hover:bg-blue-700 px-3 py-2 rounded"
+               onClick={() => { navigate('/spending');  }} 
+             >
+               Spending
+             </button>
             </li>
+
             <li>
               <button
                 className="text-white hover:bg-blue-700 px-3 py-2 rounded"

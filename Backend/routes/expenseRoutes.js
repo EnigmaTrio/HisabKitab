@@ -49,4 +49,14 @@ router.get('/', fetchuser,async (req, res) => {
   }
 });
 
+// Example endpoint to aggregate expenses by category
+router.get('/spending', async (req, res) => {
+  const expenses = await Expense.aggregate([
+    { $group: { _id: '$category', totalExpenses: { $sum: '$amount' } } },
+  ]);
+  console.log(expenses);
+  
+  res.json(expenses);
+});
+
 module.exports = router;

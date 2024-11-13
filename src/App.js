@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import AddExpense from './pages/AddExpense';
 import Budget from './pages/Budget';
 import LandingPage from './pages/landingpage'
+import SpendingPatterns from './pages/SpendingPatterns';
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
           <Route path="/add-expense" element={<AddExpense />} />
           <Route path="/budget" element={<Budget />} />
           <Route path="/demo" element={<LandingPage />} />
+          <Route path="/spending" element={<SpendingPatterns />}/>
         </Routes>
       </div>
     </Router>
