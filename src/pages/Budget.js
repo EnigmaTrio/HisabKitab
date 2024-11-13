@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Budget = () => {
-  const [expenses, setExpenses] = useState({});
   const [categoryBudgets, setCategoryBudgets] = useState({});
   const [showAddBudget, setShowAddBudget] = useState(false);
   const [newCategory, setNewCategory] = useState('');
@@ -12,38 +11,49 @@ const Budget = () => {
   const categories = ['Food', 'Clothes', 'Education', 'Miscellaneous'];
 
   useEffect(() => {
-    fetchExpenses();
+    fetchBudgets();
   }, []);
 
-  const fetchExpenses = async () => {
+  const fetchBudgets = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/expenses', {
+      const res = await axios.get('http://localhost:4000/api/budgets', {
         headers: { 'auth-token': token },
       });
 
-      const expensesByCategory = res.data.reduce((acc, expense) => {
-        const { category, amount } = expense;
-        if (!acc[category]) {
-          acc[category] = 0;
-        }
-        acc[category] += amount;
+      const budgetData = res.data.reduce((acc, budget) => {
+        acc[budget.category] = {
+          budgetAmount: budget.budgetAmount,
+          expenses: budget.expenses, 
+        };
         return acc;
       }, {});
-      setExpenses(expensesByCategory);
+      setCategoryBudgets(budgetData);
     } catch (error) {
-      console.error('Error fetching expenses:', error);
+      console.error('Error fetching budgets:', error);
     }
   };
 
-  const handleAddBudget = () => {
+
+  const handleAddBudget = async () => {
     if (newCategory && newBudget) {
-      setCategoryBudgets({
-        ...categoryBudgets,
-        [newCategory]: parseFloat(newBudget),
-      });
-      setNewCategory('');
-      setNewBudget('');
-      setShowAddBudget(false);
+      try {
+        const existingExpenses = categoryBudgets[newCategory]?.expenses || 0;
+        await axios.post(
+          'http://localhost:4000/api/budgets/add',
+          { category: newCategory, budgetAmount: parseFloat(newBudget) },
+          { headers: { 'auth-token': token } }
+        );
+        setCategoryBudgets({
+          ...categoryBudgets,
+          [newCategory]: { budgetAmount: parseFloat(newBudget),expenses: existingExpenses  },
+        });
+        alert('Budget added successfully!');
+        setNewCategory('');
+        setNewBudget('');
+        setShowAddBudget(false);
+      } catch (error) {
+        console.error('Error saving budget:', error);
+      }
     } else {
       alert('Please select a category and enter a budget amount.');
     }
@@ -91,7 +101,7 @@ const Budget = () => {
           </label>
           <button 
             onClick={handleAddBudget} 
-            className="btn btn-success"
+            className="btn btn-success mb-1"
           >
             Save Budget
           </button>
@@ -99,21 +109,24 @@ const Budget = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
-        {Object.keys(categoryBudgets).map((category) => (
-          <div 
-            key={category} 
-            className="bg-white p-4 shadow-md rounded-lg border" // Matching Expense card styles
-            style={{ width: '100%', minHeight: '180px' }} // Ensure consistent sizing
-          >
-            <h3 className="text-blue-600 font-semibold mb-2">{category}</h3>
-            <p><strong>Set Budget:</strong> ${categoryBudgets[category].toFixed(2)}</p>
-            <p><strong>Total Expenses:</strong> ${expenses[category]?.toFixed(2) || 0}</p>
-            <p>
-              <strong>Remaining Budget:</strong> $
-              {(categoryBudgets[category] - (expenses[category] || 0)).toFixed(2)}
-            </p>
-          </div>
-        ))}
+        {Object.keys(categoryBudgets).map((category) => {
+          const budgetAmount = categoryBudgets[category].budgetAmount;
+          const expenses = categoryBudgets[category].expenses || 0.00;
+          const savings = budgetAmount - expenses;
+
+          return (
+            <div 
+              key={category} 
+              className="bg-white p-4 shadow-md rounded-lg border"
+              style={{ width: '100%', minHeight: '180px' }}
+            >
+              <h3 className="text-blue-600 font-semibold mb-2">{category}</h3>
+              <p><strong>Budget:</strong> ${budgetAmount.toFixed(2)}</p>
+              <p><strong>Expenses:</strong> ${expenses.toFixed(2)}</p>
+              <p><strong>Savings:</strong> ${savings.toFixed(2)}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

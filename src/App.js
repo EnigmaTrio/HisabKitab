@@ -7,11 +7,12 @@ import Home from './pages/Home';
 import AddExpense from './pages/AddExpense';
 import Budget from './pages/Budget';
 import LandingPage from './pages/landingpage'
+import SpendingPatterns from './pages/SpendingPatterns';
 function App() {
   return (
     <Router>
       <Navbar />
-      <div className="container pt-16">
+      <div className=" pt-16">
         <Routes>
         <Route  path="/"  element={<Home/>} />
           <Route path="/login" element={<Login />} />
@@ -19,6 +20,7 @@ function App() {
           <Route path="/add-expense" element={<AddExpense />} />
           <Route path="/budget" element={<Budget />} />
           <Route path="/demo" element={<LandingPage />} />
+          <Route path="/spending" element={<SpendingPatterns />}/>
         </Routes>
       </div>
     </Router>
