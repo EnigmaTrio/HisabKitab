@@ -37,6 +37,7 @@ const Budget = () => {
   const handleAddBudget = async () => {
     if (newCategory && newBudget) {
       try {
+        const existingExpenses = categoryBudgets[newCategory]?.expenses || 0;
         await axios.post(
           'http://localhost:4000/api/budgets/add',
           { category: newCategory, budgetAmount: parseFloat(newBudget) },
@@ -44,9 +45,9 @@ const Budget = () => {
         );
         setCategoryBudgets({
           ...categoryBudgets,
-          [newCategory]: { budgetAmount: parseFloat(newBudget) },
+          [newCategory]: { budgetAmount: parseFloat(newBudget),expenses: existingExpenses  },
         });
-        alert('Expense added successfully!');
+        alert('Budget added successfully!');
         setNewCategory('');
         setNewBudget('');
         setShowAddBudget(false);

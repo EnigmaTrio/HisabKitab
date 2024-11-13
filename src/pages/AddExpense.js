@@ -52,7 +52,7 @@ const AddExpense = () => {
       fetchExpenses();
     } catch (error) {
       console.error('Error adding expense:', error);
-      alert('Error adding expense');
+      alert(error.response.data.message);
     }
   };
 

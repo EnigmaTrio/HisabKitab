@@ -8,20 +8,17 @@ router.post('/add',fetchuser, async (req, res) => {
   try {
     const { category, amount, description, date } = req.body;
     const userId = req.id; 
-    console.log({userId,category});
     
-    const budget = await Budget.findOne({ category });
-
+    const budget = await Budget.findOne({ user:userId,category });
+    
     if (!budget) {
       return res.status(400).json({ message: 'Budget not found for this category.' });
     }
     const remaining = budget.budgetAmount - budget.expenses;
-    // Check if there's enough remaining budget
     if (remaining < amount) {
       return res.status(400).json({ message: 'Not enough budget remaining for this category.' });
     }
 
-    // Deduct expense amount from the remaining budget
     budget.expenses = Number(budget.expenses) + Number(amount);
     await budget.save();
 
@@ -33,7 +30,6 @@ router.post('/add',fetchuser, async (req, res) => {
       date,
     });
 
-    console.log(newExpense);
     const savedExpense = await newExpense.save();
     
     res.json(savedExpense);
