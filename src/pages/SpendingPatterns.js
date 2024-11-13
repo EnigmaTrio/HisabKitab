@@ -127,7 +127,7 @@ const SpendingPatterns = () => {
       )}
 
       <button onClick={generatePDF} className="mt-16 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Download Report
+        Download Report as PDF
       </button>
     </div>
   );
